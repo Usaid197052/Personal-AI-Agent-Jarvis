@@ -1,7 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\brain"
+    "\\brain",
+    "\\executor",
+    "\\logs",
+    "\\memory",
+    "\\Tests",
+    "\\tools",
+    "\\voice"
   ],
   "SelectedNode": "\\main.py",
   "PreviewInSolutionExplorer": false
