@@ -1,27 +1,29 @@
-from brain.tool_selector import select_tool
+from brain.action_parser import parse_action
 from executor.action_executor import execute_action
 
 
-def main():
+while True:
 
-    print("Jarvis Agent Online")
-    print("Type 'exit' to quit")
+    request = input("\nYou: ")
 
-    while True:
+    if request.lower() == "exit":
+        break
 
-        request = input("\nYou: ")
+    action = parse_action(request)
 
-        if request.lower() == "exit":
-            break
+    print("\nParsed Action:")
+    print(action)
 
-        selected_tool = select_tool(request)
+    if action.get("tool") is None:
+        print("\nError:")
+        print(action["error"])
+        print(action["raw_response"])
+        continue
 
-        print(f"\nSelected Tool: {selected_tool}")
+    result = execute_action(
+        action["tool"],
+        action["arguments"]
+    )
 
-        result = execute_action(selected_tool)
-
-        print(f"Jarvis: {result}")
-
-
-if __name__ == "__main__":
-    main()
+    print("\nResult:")
+    print(result)
