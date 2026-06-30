@@ -1,29 +1,263 @@
-from brain.action_parser import parse_action
-from executor.action_executor import execute_action
+from voice.wake_word import (
+    wait_for_wake_word
+)
+
+from voice.speech_to_text import (
+    record_audio,
+    transcribe_audio
+)
+
+from voice.text_to_speech import (
+    speak
+)
+
+from brain.intent_router import (
+    classify_intent
+)
+
+from brain.chat import (
+    chat_with_jarvis
+)
+
+from brain.action_parser import (
+    parse_action
+)
+
+from executor.action_executor import (
+    execute_action
+)
+
+from permissions.permissions import (
+    requires_confirmation
+)
+
+from logs.logger import (
+    log_request,
+    log_action,
+    log_result
+)
 
 
-while True:
+def is_exit_request(text):
 
-    request = input("\nYou: ")
+    text = text.lower()
 
-    if request.lower() == "exit":
-        break
+    explicit_phrases = [
+        "shutdown jarvis",
+        "close jarvis",
+        "stop jarvis",
+        "shut yourself down",
+        "go offline",
+        "stop listening",
+        "you can exit now"
+    ]
 
-    action = parse_action(request)
+    if any(
+        phrase in text
+        for phrase in explicit_phrases
+    ):
+        return True
 
-    print("\nParsed Action:")
-    print(action)
+    if (
+        "jarvis" in text
+        and (
+            "shutdown" in text
+            or "shut down" in text
+            or "exit" in text
+            or "quit" in text
+        )
+    ):
+        return True
 
-    if action.get("tool") is None:
-        print("\nError:")
-        print(action["error"])
-        print(action["raw_response"])
-        continue
+    return False
 
-    result = execute_action(
-        action["tool"],
-        action["arguments"]
+
+def main():
+
+    print(
+        "Jarvis Voice Assistant"
     )
 
-    print("\nResult:")
-    print(result)
+    print(
+        "Waiting for wake word..."
+    )
+
+    wait_for_wake_word()
+
+    print(
+        "\nJarvis Activated"
+    )
+
+    speak(
+        "Jarvis is online."
+    )
+
+    while True:
+
+        audio_file = record_audio()
+
+        transcription = transcribe_audio(
+            audio_file
+        )
+
+        print(
+            f"\nYou said: {transcription}"
+        )
+
+        if not transcription.strip():
+
+            print(
+                "No speech detected."
+            )
+
+            continue
+
+        normalized_text = (
+            transcription
+            .lower()
+            .strip()
+        )
+
+        if is_exit_request(
+            normalized_text
+        ):
+
+            shutdown_message = (
+                "Jarvis shutting down."
+            )
+
+            print(
+                f"\n{shutdown_message}"
+            )
+
+            speak(
+                shutdown_message
+            )
+
+            log_result(
+                "Voice session terminated."
+            )
+
+            break
+
+        log_request(
+            transcription
+        )
+
+        intent = classify_intent(
+            transcription
+        )
+
+        print(
+            f"\nIntent: {intent}"
+        )
+
+        # ==========================
+        # CHAT REQUEST
+        # ==========================
+        if intent["intent"] == "chat":
+
+            response = chat_with_jarvis(
+                transcription
+            )
+
+            print(
+                f"\nJarvis: {response}"
+            )
+
+            speak(
+                response
+            )
+
+            log_result(
+                response
+            )
+
+            continue
+
+        # ==========================
+        # ACTION REQUEST
+        # ==========================
+        action = parse_action(
+            transcription
+        )
+
+        print(
+            "\nParsed Action:"
+        )
+
+        print(
+            action
+        )
+
+        if action.get("tool") is None:
+
+            message = (
+                "Unable to determine action."
+            )
+
+            print(
+                f"\n{message}"
+            )
+
+            speak(
+                message
+            )
+
+            continue
+
+        tool_name = action["tool"]
+
+        log_action(
+            tool_name,
+            action["arguments"]
+        )
+
+        if requires_confirmation(
+            tool_name
+        ):
+
+            approval = input(
+                f"\nJarvis wants to execute '{tool_name}'. Proceed? (Y/N): "
+            )
+
+            if approval.lower() != "y":
+
+                message = (
+                    "Action cancelled."
+                )
+
+                print(
+                    f"\n{message}"
+                )
+
+                speak(
+                    message
+                )
+
+                log_result(
+                    "Action cancelled by user."
+                )
+
+                continue
+
+        result = execute_action(
+            tool_name,
+            action["arguments"]
+        )
+
+        print(
+            f"\nResult:\n{result}"
+        )
+
+        speak(
+            result
+        )
+
+        log_result(
+            result
+        )
+
+
+if __name__ == "__main__":
+    main()
