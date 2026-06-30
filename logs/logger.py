@@ -41,3 +41,10 @@ def log_result(result):
     write_log(
         f"RESULT: {result}"
     )
+
+
+def log_wakeword(score):
+
+    write_log(
+        f"WAKEWORD: hey_jarvis | SCORE: {score:.2f}"
+    )
