@@ -1,3 +1,17 @@
+def is_exit_request(text):
+
+    text = text.lower()
+
+    explicit_phrases = [
+        "shutdown jarvis",
+        "close jarvis",
+        "stop jarvis",
+        "shut yourself down",
+        "go offline",
+        "stop listening",
+        "you can exit now"
+    ]
+
     if any(
         phrase in text
         for phrase in explicit_phrases
