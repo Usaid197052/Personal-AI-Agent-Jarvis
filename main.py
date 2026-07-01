@@ -1,21 +1,4 @@
-   
-        log_request(
-            transcription
-        )
-
-        intent = classify_intent(
-            transcription
-        )
-
-        print(
-            f"\nIntent: {intent}"
-        )
-
-        # ==========================
-        # CHAT REQUEST
-        # ==========================
-        if intent["intent"] == "chat":
-
+  
             response = chat_with_jarvis(
                 transcription
             )
