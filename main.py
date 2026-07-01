@@ -1,3 +1,7 @@
+from brain.intent_router import (
+    classify_intent
+)
+
 from brain.chat import (
     chat_with_jarvis
 )
