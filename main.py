@@ -1,3 +1,19 @@
+        if action.get("tool") is None:
+
+            message = (
+                "Unable to determine action."
+            )
+
+            print(
+                f"\n{message}"
+            )
+
+            speak(
+                message
+            )
+
+            continue
+
         tool_name = action["tool"]
 
         log_action(
