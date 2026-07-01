@@ -1,4 +1,9 @@
 
+from voice.speech_to_text import (
+    record_audio,
+    transcribe_audio
+)
+
 from voice.text_to_speech import (
     speak
 )
