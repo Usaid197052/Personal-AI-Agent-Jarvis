@@ -1,3 +1,7 @@
+from brain.chat import (
+    chat_with_jarvis
+)
+
 from brain.action_parser import (
     parse_action
 )
