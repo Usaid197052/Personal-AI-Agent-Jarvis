@@ -1,32 +1,4 @@
    
-        normalized_text = (
-            transcription
-            .lower()
-            .strip()
-        )
-
-        if is_exit_request(
-            normalized_text
-        ):
-
-            shutdown_message = (
-                "Jarvis shutting down."
-            )
-
-            print(
-                f"\n{shutdown_message}"
-            )
-
-            speak(
-                shutdown_message
-            )
-
-            log_result(
-                "Voice session terminated."
-            )
-
-            break
-
         log_request(
             transcription
         )
