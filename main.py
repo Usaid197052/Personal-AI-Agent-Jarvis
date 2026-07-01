@@ -1,3 +1,23 @@
+def main():
+
+    print(
+        "Jarvis Voice Assistant"
+    )
+
+    print(
+        "Waiting for wake word..."
+    )
+
+    wait_for_wake_word()
+
+    print(
+        "\nJarvis Activated"
+    )
+
+    speak(
+        "Jarvis is online."
+    )
+
     while True:
 
         audio_file = record_audio()
