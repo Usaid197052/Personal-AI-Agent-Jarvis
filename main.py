@@ -1,15 +1,3 @@
-
-from permissions.permissions import (
-    requires_confirmation
-)
-
-from logs.logger import (
-    log_request,
-    log_action,
-    log_result
-)
-
-
 def is_exit_request(text):
 
     text = text.lower()
