@@ -1,3 +1,18 @@
+        # ==========================
+        # ACTION REQUEST
+        # ==========================
+        action = parse_action(
+            transcription
+        )
+
+        print(
+            "\nParsed Action:"
+        )
+
+        print(
+            action
+        )
+
         if action.get("tool") is None:
 
             message = (
