@@ -1,23 +1,4 @@
-    while True:
-
-        audio_file = record_audio()
-
-        transcription = transcribe_audio(
-            audio_file
-        )
-
-        print(
-            f"\nYou said: {transcription}"
-        )
-
-        if not transcription.strip():
-
-            print(
-                "No speech detected."
-            )
-
-            continue
-
+   
         normalized_text = (
             transcription
             .lower()
