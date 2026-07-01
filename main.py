@@ -1,3 +1,23 @@
+    if any(
+        phrase in text
+        for phrase in explicit_phrases
+    ):
+        return True
+
+    if (
+        "jarvis" in text
+        and (
+            "shutdown" in text
+            or "shut down" in text
+            or "exit" in text
+            or "quit" in text
+        )
+    ):
+        return True
+
+    return False
+
+
 def main():
 
     print(
