@@ -1,3 +1,6 @@
+from voice.wake_word import (
+    wait_for_wake_word
+)
 
 from voice.speech_to_text import (
     record_audio,
