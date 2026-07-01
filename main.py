@@ -1,22 +1,3 @@
-  
-            response = chat_with_jarvis(
-                transcription
-            )
-
-            print(
-                f"\nJarvis: {response}"
-            )
-
-            speak(
-                response
-            )
-
-            log_result(
-                response
-            )
-
-            continue
-
         # ==========================
         # ACTION REQUEST
         # ==========================
